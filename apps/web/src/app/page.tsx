@@ -1,11 +1,13 @@
 import { CourseCatalogOverview } from '../components/course-catalog-overview';
 import { EnrollmentOverview } from '../components/enrollment-overview';
 import { IdentityOverview } from '../components/identity-overview';
+import { LearningCoreOverview } from '../components/learning-core-overview';
+import { PlatformNavigation } from '../components/platform-navigation';
 
 const platformStats = [
   { value: '24/7', label: 'доступ к учебным материалам и сервисам платформы' },
-  { value: 'LMS', label: 'единая среда для программ, потоков и вебинаров' },
-  { value: 'Roles', label: 'гибкая ролевая модель для команд и участников' },
+  { value: 'Единая среда', label: 'пространство для программ, потоков и вебинаров' },
+  { value: 'Роли', label: 'гибкая ролевая модель для команд и участников' },
 ];
 
 const workspaceSignals = [
@@ -41,9 +43,11 @@ const capabilities = [
 export default function HomePage() {
   return (
     <main className="page">
+      <PlatformNavigation />
+
       <section className="hero">
         <div className="hero__content">
-          <span className="badge">LSM Platform</span>
+          <span className="badge">Платформа обучения LSM</span>
           <h1>Частная LMS-платформа для организаций, программ обучения и вебинарных форматов</h1>
           <p>
             Платформа помогает запускать обучение в единой цифровой среде: публиковать программы,
@@ -61,7 +65,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <aside className="hero__aside">
+        <aside className="hero__aside" id="workspace">
           <span className="section-label">Что уже есть в платформе</span>
           <div className="stat-grid">
             {platformStats.map((item) => (
@@ -138,12 +142,40 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="workspace-section">
+        <div className="workspace-section__intro">
+          <span className="section-label">Единая рабочая среда</span>
+          <h2>Операционная панель для повседневного управления обучением</h2>
+          <p>
+            Один интерфейс объединяет программы, потоки, участников, расписание и контроль хода обучения.
+            Это позволяет команде сопровождения работать быстрее и с меньшим количеством ручных операций.
+          </p>
+        </div>
+
+        <div className="workspace-section__grid">
+          <article className="workspace-section__card">
+            <h3>Для администраторов</h3>
+            <p>Управление программами, ролями, потоками и структурой доступа.</p>
+          </article>
+          <article className="workspace-section__card">
+            <h3>Для преподавателей</h3>
+            <p>Работа с учебными группами, вебинарами, прогрессом и сопровождением участников.</p>
+          </article>
+          <article className="workspace-section__card">
+            <h3>Для слушателей</h3>
+            <p>Быстрый доступ к программам, занятиям, материалам и текущему учебному статусу.</p>
+          </article>
+        </div>
+      </section>
+
       <div className="overview-stack">
         <section id="catalog">
           <CourseCatalogOverview />
         </section>
 
         <EnrollmentOverview />
+
+        <LearningCoreOverview />
 
         <IdentityOverview />
       </div>

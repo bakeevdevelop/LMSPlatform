@@ -125,3 +125,13 @@ def test_create_enrollment_closed_cohort_rejected() -> None:
 
     assert response.status_code == 400
     assert response.json()["detail"] == "cohort_closed"
+
+
+def test_learning_module_catalog() -> None:
+    response = client.get("/api/v1/catalog/modules")
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["totalModules"] == 4
+    assert data["modules"][0]["courseId"] == "data-analytics"
+    assert data["modules"][1]["lessonsTotal"] == 6

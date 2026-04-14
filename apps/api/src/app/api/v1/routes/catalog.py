@@ -2,8 +2,14 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
-from app.schemas.catalog import CourseCatalogResponse, EnrollmentCreateRequest, EnrollmentCreateResponse, EnrollmentDirectoryResponse
-from app.services.catalog import create_enrollment, get_course_catalog, get_enrollment_directory
+from app.schemas.catalog import (
+    CourseCatalogResponse,
+    EnrollmentCreateRequest,
+    EnrollmentCreateResponse,
+    EnrollmentDirectoryResponse,
+    LearningModuleCatalogResponse,
+)
+from app.services.catalog import create_enrollment, get_course_catalog, get_enrollment_directory, get_learning_module_catalog
 
 router = APIRouter(prefix="/catalog", tags=["catalog"])
 
@@ -16,6 +22,11 @@ def list_courses(db: Session = Depends(get_db)) -> CourseCatalogResponse:
 @router.get("/enrollments", response_model=EnrollmentDirectoryResponse)
 def list_enrollments(db: Session = Depends(get_db)) -> EnrollmentDirectoryResponse:
     return get_enrollment_directory(db)
+
+
+@router.get("/modules", response_model=LearningModuleCatalogResponse)
+def list_learning_modules(db: Session = Depends(get_db)) -> LearningModuleCatalogResponse:
+    return get_learning_module_catalog(db)
 
 
 @router.post("/enroll", response_model=EnrollmentCreateResponse, status_code=status.HTTP_201_CREATED)

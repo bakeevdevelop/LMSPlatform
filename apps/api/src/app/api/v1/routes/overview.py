@@ -55,5 +55,10 @@ def get_overview() -> OverviewResponse:
                 status="in-progress",
                 description="Каталог стартовых курсов и программа следующего этапа learning core.",
             ),
+            ModuleSummary(
+                name="Learning Core",
+                status="in-progress",
+                description="Модули курсов, структура контента и основа для трекинга прогресса.",
+            ),
         ],
     )

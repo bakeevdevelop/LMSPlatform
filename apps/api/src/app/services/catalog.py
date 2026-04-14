@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.db.base import Base
 from app.db.session import engine
-from app.models.catalog import Cohort, Course, Enrollment
+from app.models.catalog import Cohort, Course, Enrollment, LearningModule
 from app.models.identity import User
 from app.services.identity import seed_identity_data
 from app.schemas.catalog import (
@@ -16,6 +16,8 @@ from app.schemas.catalog import (
     EnrollmentCreateResponse,
     EnrollmentDirectoryResponse,
     EnrollmentSummary,
+    LearningModuleCatalogResponse,
+    LearningModuleSummary,
 )
 
 
@@ -136,6 +138,59 @@ def seed_enrollment_data(db: Session) -> None:
     db.commit()
 
 
+def seed_learning_modules(db: Session) -> None:
+    seed_courses(db)
+
+    if db.scalar(select(LearningModule.id).limit(1)):
+        return
+
+    modules = [
+        LearningModule(
+            id="python-basic-module-1",
+            course_id="python-basic",
+            title="Введение в Python",
+            description="Синтаксис, переменные, типы данных и базовые конструкции языка.",
+            position=1,
+            lessons_total=6,
+            duration_minutes=180,
+            status="published",
+        ),
+        LearningModule(
+            id="python-basic-module-2",
+            course_id="python-basic",
+            title="Функции и структура кода",
+            description="Повторное использование кода, функции, параметры и разбиение программы на блоки.",
+            position=2,
+            lessons_total=5,
+            duration_minutes=160,
+            status="published",
+        ),
+        LearningModule(
+            id="web-typescript-module-1",
+            course_id="web-typescript",
+            title="Типизация и интерфейсы",
+            description="Основы типовой системы TypeScript, интерфейсы и типизация компонентов.",
+            position=1,
+            lessons_total=7,
+            duration_minutes=210,
+            status="published",
+        ),
+        LearningModule(
+            id="data-analytics-module-1",
+            course_id="data-analytics",
+            title="Таблицы и визуализация",
+            description="Работа с учебными данными, фильтрация, агрегаты и базовые визуальные отчеты.",
+            position=1,
+            lessons_total=4,
+            duration_minutes=140,
+            status="planned",
+        ),
+    ]
+
+    db.add_all(modules)
+    db.commit()
+
+
 def get_course_catalog(db: Session) -> CourseCatalogResponse:
     seed_courses(db)
     courses = db.scalars(select(Course).order_by(Course.title)).all()
@@ -202,11 +257,11 @@ def get_enrollment_directory(db: Session) -> EnrollmentDirectoryResponse:
 def create_enrollment(db: Session, payload: EnrollmentCreateRequest) -> EnrollmentCreateResponse:
     seed_enrollment_data(db)
 
-    user = db.get(User, payload.user_id)
+    user = db.get(User, payload.userId)
     if user is None:
         raise ValueError("user_not_found")
 
-    cohort = db.get(Cohort, payload.cohort_id)
+    cohort = db.get(Cohort, payload.cohortId)
     if cohort is None:
         raise ValueError("cohort_not_found")
 
@@ -218,8 +273,8 @@ def create_enrollment(db: Session, payload: EnrollmentCreateRequest) -> Enrollme
 
     existing = db.scalar(
         select(Enrollment).where(
-            Enrollment.user_id == payload.user_id,
-            Enrollment.cohort_id == payload.cohort_id,
+            Enrollment.user_id == payload.userId,
+            Enrollment.cohort_id == payload.cohortId,
         )
     )
     if existing is not None:
@@ -231,10 +286,10 @@ def create_enrollment(db: Session, payload: EnrollmentCreateRequest) -> Enrollme
 
     enrolled_at = datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
     enrollment = Enrollment(
-        id=f"enrollment-{payload.user_id}-{payload.cohort_id}",
+        id=f"enrollment-{payload.userId}-{payload.cohortId}",
         user_id=user.id,
         course_id=cohort.course_id,
-        cohort_id=payload.cohort_id,
+        cohort_id=payload.cohortId,
         status="enrolled",
         progress_percent=0,
         enrolled_at=enrolled_at,
@@ -266,4 +321,26 @@ def create_enrollment(db: Session, payload: EnrollmentCreateRequest) -> Enrollme
             available_slots=max(cohort.capacity - cohort.enrolled_count, 0),
             status=cohort.status,
         ),
+    )
+
+
+def get_learning_module_catalog(db: Session) -> LearningModuleCatalogResponse:
+    seed_learning_modules(db)
+    modules = db.scalars(select(LearningModule).order_by(LearningModule.course_id, LearningModule.position)).all()
+
+    return LearningModuleCatalogResponse(
+        total_modules=len(modules),
+        modules=[
+            LearningModuleSummary(
+                id=module.id,
+                course_id=module.course_id,
+                title=module.title,
+                description=module.description,
+                position=module.position,
+                lessons_total=module.lessons_total,
+                duration_minutes=module.duration_minutes,
+                status=module.status,
+            )
+            for module in modules
+        ],
     )

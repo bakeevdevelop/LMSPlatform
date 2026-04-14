@@ -40,3 +40,16 @@ class Enrollment(Base):
     status: Mapped[str] = mapped_column(String(30), nullable=False, default="enrolled")
     progress_percent: Mapped[int] = mapped_column(nullable=False, default=0)
     enrolled_at: Mapped[str] = mapped_column(String(30), nullable=False)
+
+
+class LearningModule(Base):
+    __tablename__ = "learning_modules"
+
+    id: Mapped[str] = mapped_column(String(60), primary_key=True)
+    course_id: Mapped[str] = mapped_column(ForeignKey("courses.id"), nullable=False, index=True)
+    title: Mapped[str] = mapped_column(String(200), nullable=False)
+    description: Mapped[str] = mapped_column(Text, nullable=False)
+    position: Mapped[int] = mapped_column(nullable=False, default=1)
+    lessons_total: Mapped[int] = mapped_column(nullable=False, default=0)
+    duration_minutes: Mapped[int] = mapped_column(nullable=False, default=0)
+    status: Mapped[str] = mapped_column(String(30), nullable=False, default="draft")

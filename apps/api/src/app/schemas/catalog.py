@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, Field
 
 
 class CourseSummary(BaseModel):
@@ -47,12 +47,26 @@ class EnrollmentDirectoryResponse(BaseModel):
 
 
 class EnrollmentCreateRequest(BaseModel):
-    model_config = ConfigDict(populate_by_name=True)
-
-    user_id: str = Field(validation_alias="userId", serialization_alias="userId")
-    cohort_id: str = Field(validation_alias="cohortId", serialization_alias="cohortId")
+    userId: str
+    cohortId: str
 
 
 class EnrollmentCreateResponse(BaseModel):
     enrollment: EnrollmentSummary
     cohort: CohortSummary
+
+
+class LearningModuleSummary(BaseModel):
+    id: str
+    course_id: str = Field(serialization_alias="courseId")
+    title: str
+    description: str
+    position: int
+    lessons_total: int = Field(serialization_alias="lessonsTotal")
+    duration_minutes: int = Field(serialization_alias="durationMinutes")
+    status: str
+
+
+class LearningModuleCatalogResponse(BaseModel):
+    total_modules: int = Field(serialization_alias="totalModules")
+    modules: list[LearningModuleSummary]

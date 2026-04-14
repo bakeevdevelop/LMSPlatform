@@ -3,8 +3,8 @@ import type { Metadata } from 'next';
 import { ReactNode } from 'react';
 
 export const metadata: Metadata = {
-  title: 'LSM Platform',
-  description: 'LMS platform for the federal project «Код будущего».',
+  title: 'Платформа обучения LSM',
+  description: 'Частная LMS-платформа для программ обучения, потоков и вебинаров.',
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
