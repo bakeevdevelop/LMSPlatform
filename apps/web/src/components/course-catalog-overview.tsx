@@ -64,10 +64,10 @@ export function CourseCatalogOverview() {
     <section className="catalog-panel">
       <div className="catalog-header">
         <div>
-          <span className="section-label">Каталог курсов</span>
-          <h3>{data.totalCourses} стартовых программ</h3>
+          <span className="section-label">Программы обучения</span>
+          <h3>{data.totalCourses} программ в каталоге платформы</h3>
           <p className="catalog-description">
-            Набор пилотных программ для демонстрации учебного каталога и управления потоками.
+            Каталог помогает представить направления обучения, форматы занятий и содержание программ в одном месте.
           </p>
         </div>
       </div>

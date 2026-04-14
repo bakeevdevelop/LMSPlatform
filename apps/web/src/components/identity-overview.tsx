@@ -59,19 +59,19 @@ export function IdentityOverview() {
   }, []);
 
   if (error) {
-    return <p className="error-box">Не удалось загрузить каталог identity: {error}</p>;
+    return <p className="error-box">Не удалось загрузить данные о ролях и участниках: {error}</p>;
   }
 
   if (!data) {
-    return <p className="loading-box">Загрузка данных identity…</p>;
+    return <p className="loading-box">Загрузка данных о ролях и участниках…</p>;
   }
 
   return (
     <section className="identity-grid">
       <article className="identity-card">
-        <span className="section-label">Пользователи</span>
+        <span className="section-label">Участники</span>
         <h3>{data.totalUsers}</h3>
-        <p className="card-note">Стартовый реестр участников и сотрудников платформы.</p>
+        <p className="card-note">Платформа объединяет слушателей, преподавателей и команду сопровождения.</p>
         <ul className="mini-list">
           {data.users.map((user) => (
             <li key={user.id}>
@@ -86,9 +86,9 @@ export function IdentityOverview() {
       </article>
 
       <article className="identity-card">
-        <span className="section-label">Роли</span>
+        <span className="section-label">Ролевой доступ</span>
         <h3>{data.totalRoles}</h3>
-        <p className="card-note">Ролевая модель для образовательного и административного контура.</p>
+        <p className="card-note">Гибкая структура ролей помогает разделять сценарии работы и уровни доступа.</p>
         <ul className="mini-list">
           {data.roles.map((role) => (
             <li key={role.code}>

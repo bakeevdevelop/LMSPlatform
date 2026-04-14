@@ -35,55 +35,6 @@ type EnrollmentDirectory = {
 export function EnrollmentOverview() {
   const [data, setData] = useState<EnrollmentDirectory | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [actionError, setActionError] = useState<string | null>(null);
-  const [activeCohortId, setActiveCohortId] = useState<string | null>(null);
-
-  async function enroll(cohortId: string) {
-    setActionError(null);
-    setActiveCohortId(cohortId);
-
-    try {
-      const response = await fetch('http://127.0.0.1:8000/api/v1/catalog/enroll', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId: 'demo-student',
-          cohortId,
-        }),
-      });
-
-      if (!response.ok) {
-        const payload = (await response.json()) as { detail?: string };
-        throw new Error(payload.detail ?? `HTTP ${response.status}`);
-      }
-
-      const payload = (await response.json()) as {
-        cohort: CohortSummary;
-        enrollment: EnrollmentSummary;
-      };
-
-      setData((current) => {
-        if (!current) {
-          return current;
-        }
-
-        return {
-          ...current,
-          totalEnrollments: current.totalEnrollments + 1,
-          cohorts: current.cohorts.map((cohort) =>
-            cohort.id === payload.cohort.id ? payload.cohort : cohort,
-          ),
-          enrollments: [...current.enrollments, payload.enrollment],
-        };
-      });
-    } catch (err) {
-      setActionError(err instanceof Error ? err.message : 'Unknown error');
-    } finally {
-      setActiveCohortId(null);
-    }
-  }
 
   useEffect(() => {
     let cancelled = false;
@@ -117,21 +68,21 @@ export function EnrollmentOverview() {
   }, []);
 
   if (error) {
-    return <p className="error-box">Не удалось загрузить enrollment foundation: {error}</p>;
+    return <p className="error-box">Не удалось загрузить данные о потоках: {error}</p>;
   }
 
   if (!data) {
-    return <p className="loading-box">Загрузка enrollment foundation…</p>;
+    return <p className="loading-box">Загрузка данных о потоках…</p>;
   }
 
   return (
     <section className="enrollment-panel">
       <div>
-        <span className="section-label">Enrollment foundation</span>
-        <h2>Запись на потоки и стартовый контур набора</h2>
+        <span className="section-label">Потоки и набор</span>
+        <h2>Управление потоками, наборами и заполнением учебных групп</h2>
         <p>
-          Появились dev-данные по потокам, слотам и текущим enrollment-записям. Это база для
-          дальнейших сценариев записи, progress tracking и управления cohort lifecycle.
+          Платформа позволяет работать с потоками, контролировать доступные места, видеть текущую
+          загрузку групп и управлять логикой набора на программы.
         </p>
       </div>
 
@@ -139,25 +90,23 @@ export function EnrollmentOverview() {
         <article className="summary-tile">
           <span className="section-label">Потоки</span>
           <strong>{data.totalCohorts}</strong>
-          <p>Активные и плановые наборы по программам.</p>
+          <p>Активные и планируемые потоки по программам.</p>
         </article>
         <article className="summary-tile">
           <span className="section-label">Открытые</span>
           <strong>{data.openCohorts}</strong>
-          <p>Потоки, доступные для записи в текущем демо-контуре.</p>
+          <p>Потоки, где в настоящий момент открыт набор.</p>
         </article>
         <article className="summary-tile">
           <span className="section-label">Записи</span>
           <strong>{data.totalEnrollments}</strong>
-          <p>Зафиксированные enrollment-события в dev persistence.</p>
+          <p>Текущие записи участников в выбранные потоки.</p>
         </article>
       </div>
 
       <div className="enrollment-grid">
         {data.cohorts.map((cohort) => {
           const matchingEnrollments = data.enrollments.filter((item) => item.cohortId === cohort.id);
-          const studentAlreadyEnrolled = matchingEnrollments.some((item) => item.userId === 'demo-student');
-          const canEnroll = cohort.status === 'open' && cohort.availableSlots > 0 && !studentAlreadyEnrolled;
 
           return (
             <article key={cohort.id} className="cohort-card">
@@ -189,27 +138,10 @@ export function EnrollmentOverview() {
                   </li>
                 ))}
               </ul>
-
-              <button
-                type="button"
-                className="action-button"
-                onClick={() => enroll(cohort.id)}
-                disabled={!canEnroll || activeCohortId === cohort.id}
-              >
-                {studentAlreadyEnrolled
-                  ? 'demo-student уже записан'
-                  : activeCohortId === cohort.id
-                    ? 'Записываем…'
-                    : canEnroll
-                      ? 'Записать demo-student'
-                      : 'Запись недоступна'}
-              </button>
             </article>
           );
         })}
       </div>
-
-      {actionError ? <p className="error-box">Ошибка записи: {actionError}</p> : null}
     </section>
   );
 }
