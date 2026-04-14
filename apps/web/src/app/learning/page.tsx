@@ -1,4 +1,5 @@
 import { LearningCoreOverview } from '../../components/learning-core-overview';
+import { LearningLessonOverview } from '../../components/learning-lesson-overview';
 import { PlatformNavigation } from '../../components/platform-navigation.clean';
 
 export default function LearningPage() {
@@ -16,6 +17,8 @@ export default function LearningPage() {
       </section>
 
       <LearningCoreOverview />
+
+      <LearningLessonOverview />
     </main>
   );
 }

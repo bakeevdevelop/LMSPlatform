@@ -9,6 +9,7 @@ type StudentCourseProgress = {
   progressPercent: number;
   status: string;
   nextModuleTitle?: string | null;
+  nextLessonTitle?: string | null;
 };
 
 type StudentDashboardResponse = {
@@ -17,6 +18,7 @@ type StudentDashboardResponse = {
   totalActiveCourses: number;
   totalWebinarsThisWeek: number;
   completedLessons: number;
+  totalLessonsPlanned: number;
   inProgressCourses: StudentCourseProgress[];
 };
 
@@ -69,8 +71,8 @@ export function StudentDashboardOverview() {
         <span className="section-label">Кабинет слушателя</span>
         <h2>{data.fullName}</h2>
         <p>
-          Кабинет показывает текущие курсы, активные потоки, объем завершенного обучения и ближайший
-          учебный модуль.
+          Кабинет показывает активные курсы, текущий прогресс, ближайший модуль и следующий урок в
+          учебном маршруте.
         </p>
       </div>
 
@@ -78,14 +80,17 @@ export function StudentDashboardOverview() {
         <article className="summary-tile">
           <span className="section-label">Активные курсы</span>
           <strong>{data.totalActiveCourses}</strong>
+          <p>Курсы, по которым сейчас идет обучение.</p>
         </article>
         <article className="summary-tile">
           <span className="section-label">Вебинары на неделе</span>
           <strong>{data.totalWebinarsThisWeek}</strong>
+          <p>Запланированные синхронные занятия в ближайшие дни.</p>
         </article>
         <article className="summary-tile">
           <span className="section-label">Пройдено уроков</span>
           <strong>{data.completedLessons}</strong>
+          <p>Из {data.totalLessonsPlanned} уроков в базовом учебном контуре.</p>
         </article>
       </div>
 
@@ -107,9 +112,14 @@ export function StudentDashboardOverview() {
             <p className="panel-footnote">
               Следующий модуль: {course.nextModuleTitle ?? 'будет назначен позже'}
             </p>
+            <p className="panel-footnote">
+              Следующий урок: {course.nextLessonTitle ?? 'будет назначен позже'}
+            </p>
           </article>
         ))}
       </div>
+
+      <p className="panel-footnote">Кабинет станет основой для персонального маршрута обучения и ежедневной учебной работы.</p>
     </section>
   );
 }

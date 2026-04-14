@@ -128,7 +128,6 @@ body {
   background: var(--accent-soft);
   border: 1px solid rgba(29, 95, 191, 0.14);
   color: var(--accent);
-  font-size: 14px;
   font-weight: 700;
   margin-bottom: 18px;
 }
@@ -555,6 +554,46 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 16px;
+}
+
+.lesson-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.lesson-group-card {
+  padding: 20px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--panel-strong);
+}
+
+.lesson-list {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.lesson-list__item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.lesson-list__item strong {
+  color: var(--text);
+}
+
+.lesson-list__item small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
 }
 
 .catalog-card {
