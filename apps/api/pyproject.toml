@@ -1,0 +1,24 @@
+[project]
+name = "lsm-api"
+version = "0.1.0"
+description = "API for LMS platform of the federal project 'Код будущего'"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.115,<0.116",
+  "uvicorn[standard]>=0.34,<0.35",
+  "pydantic-settings>=2.8,<2.9"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3,<8.4",
+  "httpx>=0.28,<0.29"
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+addopts = "-q"
