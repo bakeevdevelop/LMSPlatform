@@ -8,6 +8,12 @@ const platformStats = [
   { value: 'Roles', label: 'гибкая ролевая модель для команд и участников' },
 ];
 
+const workspaceSignals = [
+  { label: 'Программы в работе', value: '12+' },
+  { label: 'Открытые потоки', value: '04' },
+  { label: 'Средний прогресс', value: '68%' },
+];
+
 const highlights = [
   {
     title: 'Каталог программ',
@@ -64,6 +70,40 @@ export default function HomePage() {
                 <span>{item.label}</span>
               </article>
             ))}
+          </div>
+
+          <div className="workspace-preview">
+            <div className="workspace-preview__header">
+              <div>
+                <span className="workspace-preview__eyebrow">Рабочее пространство</span>
+                <strong>Сводка по обучению</strong>
+              </div>
+              <span className="status-chip status-chip--light">Online</span>
+            </div>
+
+            <div className="workspace-preview__grid">
+              {workspaceSignals.map((item) => (
+                <article key={item.label} className="workspace-preview__card">
+                  <strong>{item.value}</strong>
+                  <span>{item.label}</span>
+                </article>
+              ))}
+            </div>
+
+            <ul className="workspace-preview__list">
+              <li>
+                <span>Ближайший вебинар</span>
+                <strong>сегодня, 18:00</strong>
+              </li>
+              <li>
+                <span>Новые заявки</span>
+                <strong>8 за сутки</strong>
+              </li>
+              <li>
+                <span>Активные роли</span>
+                <strong>слушатели, преподаватели, администраторы</strong>
+              </li>
+            </ul>
           </div>
         </aside>
       </section>

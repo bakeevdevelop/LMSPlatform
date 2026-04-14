@@ -73,7 +73,7 @@ export function IdentityOverview() {
         <h3>{data.totalUsers}</h3>
         <p className="card-note">Платформа объединяет слушателей, преподавателей и команду сопровождения.</p>
         <ul className="mini-list">
-          {data.users.map((user) => (
+          {data.users.slice(0, 3).map((user) => (
             <li key={user.id}>
               <div>
                 <strong>{user.fullName}</strong>
@@ -90,7 +90,7 @@ export function IdentityOverview() {
         <h3>{data.totalRoles}</h3>
         <p className="card-note">Гибкая структура ролей помогает разделять сценарии работы и уровни доступа.</p>
         <ul className="mini-list">
-          {data.roles.map((role) => (
+          {data.roles.slice(0, 3).map((role) => (
             <li key={role.code}>
               <div>
                 <strong>{role.name}</strong>

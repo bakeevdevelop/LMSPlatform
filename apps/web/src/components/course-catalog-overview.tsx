@@ -73,7 +73,7 @@ export function CourseCatalogOverview() {
       </div>
 
       <div className="catalog-grid">
-        {data.courses.map((course) => (
+        {data.courses.slice(0, 3).map((course) => (
           <article key={course.id} className="catalog-card">
             <div className="catalog-card__meta">
               <span>{course.level}</span>
@@ -86,6 +86,8 @@ export function CourseCatalogOverview() {
           </article>
         ))}
       </div>
+
+      <p className="panel-footnote">Показаны ключевые программы. Полный каталог будет расширяться по мере развития платформы.</p>
     </section>
   );
 }

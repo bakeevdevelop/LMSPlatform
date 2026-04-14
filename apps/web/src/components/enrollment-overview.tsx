@@ -105,7 +105,7 @@ export function EnrollmentOverview() {
       </div>
 
       <div className="enrollment-grid">
-        {data.cohorts.map((cohort) => {
+        {data.cohorts.slice(0, 2).map((cohort) => {
           const matchingEnrollments = data.enrollments.filter((item) => item.cohortId === cohort.id);
 
           return (
@@ -142,6 +142,8 @@ export function EnrollmentOverview() {
           );
         })}
       </div>
+
+      <p className="panel-footnote">На главной показана обзорная сводка по потокам и текущему набору.</p>
     </section>
   );
 }
