@@ -70,3 +70,18 @@ class LearningModuleSummary(BaseModel):
 class LearningModuleCatalogResponse(BaseModel):
     total_modules: int = Field(serialization_alias="totalModules")
     modules: list[LearningModuleSummary]
+
+
+class LearningLessonSummary(BaseModel):
+    id: str
+    module_id: str = Field(serialization_alias="moduleId")
+    title: str
+    position: int
+    duration_minutes: int = Field(serialization_alias="durationMinutes")
+    lesson_type: str = Field(serialization_alias="lessonType")
+    status: str
+
+
+class LearningLessonCatalogResponse(BaseModel):
+    total_lessons: int = Field(serialization_alias="totalLessons")
+    lessons: list[LearningLessonSummary]

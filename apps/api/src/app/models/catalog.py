@@ -53,3 +53,15 @@ class LearningModule(Base):
     lessons_total: Mapped[int] = mapped_column(nullable=False, default=0)
     duration_minutes: Mapped[int] = mapped_column(nullable=False, default=0)
     status: Mapped[str] = mapped_column(String(30), nullable=False, default="draft")
+
+
+class LearningLesson(Base):
+    __tablename__ = "learning_lessons"
+
+    id: Mapped[str] = mapped_column(String(80), primary_key=True)
+    module_id: Mapped[str] = mapped_column(ForeignKey("learning_modules.id"), nullable=False, index=True)
+    title: Mapped[str] = mapped_column(String(220), nullable=False)
+    position: Mapped[int] = mapped_column(nullable=False, default=1)
+    duration_minutes: Mapped[int] = mapped_column(nullable=False, default=0)
+    lesson_type: Mapped[str] = mapped_column(String(40), nullable=False, default="lesson")
+    status: Mapped[str] = mapped_column(String(30), nullable=False, default="draft")

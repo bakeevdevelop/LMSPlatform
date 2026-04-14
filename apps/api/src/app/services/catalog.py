@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.db.base import Base
 from app.db.session import engine
-from app.models.catalog import Cohort, Course, Enrollment, LearningModule
+from app.models.catalog import Cohort, Course, Enrollment, LearningLesson, LearningModule
 from app.models.identity import User
 from app.services.identity import seed_identity_data
 from app.schemas.catalog import (
@@ -16,6 +16,8 @@ from app.schemas.catalog import (
     EnrollmentCreateResponse,
     EnrollmentDirectoryResponse,
     EnrollmentSummary,
+    LearningLessonCatalogResponse,
+    LearningLessonSummary,
     LearningModuleCatalogResponse,
     LearningModuleSummary,
 )
@@ -191,6 +193,64 @@ def seed_learning_modules(db: Session) -> None:
     db.commit()
 
 
+def seed_learning_lessons(db: Session) -> None:
+    seed_learning_modules(db)
+
+    if db.scalar(select(LearningLesson.id).limit(1)):
+        return
+
+    lessons = [
+        LearningLesson(
+            id="python-basic-module-1-lesson-1",
+            module_id="python-basic-module-1",
+            title="Переменные и типы данных",
+            position=1,
+            duration_minutes=35,
+            lesson_type="lesson",
+            status="published",
+        ),
+        LearningLesson(
+            id="python-basic-module-1-lesson-2",
+            module_id="python-basic-module-1",
+            title="Условия и циклы",
+            position=2,
+            duration_minutes=40,
+            lesson_type="practice",
+            status="published",
+        ),
+        LearningLesson(
+            id="python-basic-module-2-lesson-1",
+            module_id="python-basic-module-2",
+            title="Функции и параметры",
+            position=1,
+            duration_minutes=30,
+            lesson_type="lesson",
+            status="published",
+        ),
+        LearningLesson(
+            id="web-typescript-module-1-lesson-1",
+            module_id="web-typescript-module-1",
+            title="Базовые типы TypeScript",
+            position=1,
+            duration_minutes=45,
+            lesson_type="lesson",
+            status="published",
+        ),
+        LearningLesson(
+            id="data-analytics-module-1-lesson-1",
+            module_id="data-analytics-module-1",
+            title="Подготовка таблиц к анализу",
+            position=1,
+            duration_minutes=35,
+            lesson_type="lesson",
+            status="planned",
+        ),
+    ]
+
+    db.add_all(lessons)
+    db.commit()
+
+
 def get_course_catalog(db: Session) -> CourseCatalogResponse:
     seed_courses(db)
     courses = db.scalars(select(Course).order_by(Course.title)).all()
@@ -342,5 +402,26 @@ def get_learning_module_catalog(db: Session) -> LearningModuleCatalogResponse:
                 status=module.status,
             )
             for module in modules
+        ],
+    )
+
+
+def get_learning_lesson_catalog(db: Session) -> LearningLessonCatalogResponse:
+    seed_learning_lessons(db)
+    lessons = db.scalars(select(LearningLesson).order_by(LearningLesson.module_id, LearningLesson.position)).all()
+
+    return LearningLessonCatalogResponse(
+        total_lessons=len(lessons),
+        lessons=[
+            LearningLessonSummary(
+                id=lesson.id,
+                module_id=lesson.module_id,
+                title=lesson.title,
+                position=lesson.position,
+                duration_minutes=lesson.duration_minutes,
+                lesson_type=lesson.lesson_type,
+                status=lesson.status,
+            )
+            for lesson in lessons
         ],
     )

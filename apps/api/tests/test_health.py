@@ -145,3 +145,13 @@ def test_learning_module_catalog() -> None:
     assert data["totalModules"] == 4
     assert data["modules"][0]["courseId"] == "data-analytics"
     assert data["modules"][1]["lessonsTotal"] == 6
+
+
+def test_learning_lesson_catalog() -> None:
+    response = client.get("/api/v1/catalog/lessons")
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["totalLessons"] == 5
+    assert data["lessons"][0]["moduleId"] == "data-analytics-module-1"
+    assert data["lessons"][1]["lessonType"] == "lesson"

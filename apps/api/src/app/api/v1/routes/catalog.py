@@ -7,9 +7,16 @@ from app.schemas.catalog import (
     EnrollmentCreateRequest,
     EnrollmentCreateResponse,
     EnrollmentDirectoryResponse,
+    LearningLessonCatalogResponse,
     LearningModuleCatalogResponse,
 )
-from app.services.catalog import create_enrollment, get_course_catalog, get_enrollment_directory, get_learning_module_catalog
+from app.services.catalog import (
+    create_enrollment,
+    get_course_catalog,
+    get_enrollment_directory,
+    get_learning_lesson_catalog,
+    get_learning_module_catalog,
+)
 
 router = APIRouter(prefix="/catalog", tags=["catalog"])
 
@@ -27,6 +34,11 @@ def list_enrollments(db: Session = Depends(get_db)) -> EnrollmentDirectoryRespon
 @router.get("/modules", response_model=LearningModuleCatalogResponse)
 def list_learning_modules(db: Session = Depends(get_db)) -> LearningModuleCatalogResponse:
     return get_learning_module_catalog(db)
+
+
+@router.get("/lessons", response_model=LearningLessonCatalogResponse)
+def list_learning_lessons(db: Session = Depends(get_db)) -> LearningLessonCatalogResponse:
+    return get_learning_lesson_catalog(db)
 
 
 @router.post("/enroll", response_model=EnrollmentCreateResponse, status_code=status.HTTP_201_CREATED)
