@@ -2,8 +2,8 @@
   "name": "lsm-project",
   "private": true,
   "scripts": {
-    "dev:web": "npm --prefix apps/web run dev",
-    "build:web": "npm --prefix apps/web run build",
-    "lint:web": "npm --prefix apps/web run lint"
+    "dev:web": "cd apps/web && npm run dev",
+    "build:web": "cd apps/web && npm run build",
+    "lint:web": "cd apps/web && npm run lint"
   }
 }

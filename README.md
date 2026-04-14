@@ -27,8 +27,8 @@
 
 ### Frontend
 - установить Node.js 22+ и `npm`;
-- установить зависимости: `npm --prefix apps/web install`;
-- запустить: `npm --prefix apps/web run dev`.
+- установить зависимости: `cd apps/web && npm install`;
+- запустить: `cd apps/web && npm run dev`.
 
 ### Проверка
 - backend healthcheck: `GET /api/v1/health`;
@@ -40,6 +40,12 @@
 - monorepo-структура проекта;
 - FastAPI backend scaffold;
 - Next.js frontend scaffold;
+- auth foundation с базовым session bootstrap и demo login endpoint;
+- foundation пользователей и ролей с каталогом identity directory;
+- SQLite dev persistence для identity foundation;
+- foundation каталога курсов с endpoint `GET /api/v1/catalog/courses`;
+- foundation записи на потоки с endpoint `GET /api/v1/catalog/enrollments` и `POST /api/v1/catalog/enroll`;
+- demo-action записи `demo-student` на открытый поток прямо из web-интерфейса;
 - базовый CI workflow;
 - docker compose для локального запуска;
 - healthcheck и обзорный API endpoint.

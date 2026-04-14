@@ -1,7 +1,17 @@
+import { CourseCatalogOverview } from '../components/course-catalog-overview';
+import { EnrollmentOverview } from '../components/enrollment-overview';
+import { IdentityOverview } from '../components/identity-overview';
+
 const highlights = [
   'Курсы, потоки и цифровой след',
   'Встроенные вебинары и контроль присутствия',
   'Отчетность и аудит для федерального проекта',
+];
+
+const nextSteps = [
+  'Auth foundation и bootstrap сессии уже доступны через API',
+  'Пользователи и роли уже читаются из SQLite dev persistence',
+  'Теперь доступна стартовая запись на поток и сводка enrollment',
 ];
 
 export default function HomePage() {
@@ -27,6 +37,29 @@ export default function HomePage() {
           </article>
         ))}
       </section>
+
+      <section className="panel">
+        <div>
+          <span className="section-label">Сейчас доступно</span>
+          <h2>Foundation модулей identity, auth и ролей</h2>
+          <p>
+            В backend уже подняты стартовые endpoint&apos;ы для проверки health,
+            обзора платформы, auth bootstrap, demo login и каталога пользователей с ролями.
+          </p>
+        </div>
+
+        <ul className="timeline">
+          {nextSteps.map((step) => (
+            <li key={step}>{step}</li>
+          ))}
+        </ul>
+
+        <IdentityOverview />
+      </section>
+
+      <CourseCatalogOverview />
+
+      <EnrollmentOverview />
     </main>
   );
 }

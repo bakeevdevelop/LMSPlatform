@@ -40,5 +40,20 @@ def get_overview() -> OverviewResponse:
                 status="planned",
                 description="Встроенные вебинары, присутствие, чат и запись.",
             ),
+            ModuleSummary(
+                name="Auth Foundation",
+                status="in-progress",
+                description="Login, session bootstrap and role-aware identity foundation.",
+            ),
+            ModuleSummary(
+                name="Users & Roles Foundation",
+                status="in-progress",
+                description="Directory endpoint for initial users, roles and access model bootstrap.",
+            ),
+            ModuleSummary(
+                name="Course Catalog Foundation",
+                status="in-progress",
+                description="Каталог стартовых курсов и программа следующего этапа learning core.",
+            ),
         ],
     )
