@@ -2,10 +2,32 @@ import { CourseCatalogOverview } from '../components/course-catalog-overview';
 import { EnrollmentOverview } from '../components/enrollment-overview';
 import { IdentityOverview } from '../components/identity-overview';
 
+const trustFacts = [
+  'Ролевой доступ и разграничение сценариев работы',
+  'Подготовка к аудиту, отчетности и цифровому следу',
+  'API-first архитектура для интеграционного контура',
+  'Единая среда обучения, вебинаров и управления потоками',
+];
+
 const platformStats = [
   { value: '24/7', label: 'доступность сервисов и учебных материалов' },
   { value: '152-ФЗ', label: 'ориентир по защите персональных данных' },
-  { value: 'API-first', label: 'подход к интеграциям и отчетности' },
+  { value: 'Аудит', label: 'прозрачная фиксация действий и событий' },
+];
+
+const userJourneys = [
+  {
+    title: 'Выберите программу',
+    text: 'Участник или его представитель знакомится с доступными направлениями и форматами обучения.',
+  },
+  {
+    title: 'Подайте заявку и запишитесь',
+    text: 'Система поддерживает работу с потоками, статусами набора и контролем доступных мест.',
+  },
+  {
+    title: 'Обучайтесь и отслеживайте прогресс',
+    text: 'Курсы, вебинары, роли и дальнейшая аналитика собираются в едином цифровом контуре.',
+  },
 ];
 
 const highlights = [
@@ -38,27 +60,27 @@ export default function HomePage() {
           <strong>Проект «Код будущего»</strong>
         </div>
         <div className="topbar__meta">
-          <span>Статус: MVP foundation</span>
-          <span>Среда: dev</span>
+          <span>Пилотный контур</span>
+          <span>Образовательная платформа</span>
         </div>
       </section>
 
       <section className="hero">
         <div className="hero__content">
           <span className="badge">LSM Platform</span>
-          <h1>Современная цифровая платформа обучения для государственных и образовательных контуров</h1>
+          <h1>Цифровая образовательная платформа для федеральных программ и государственных контуров</h1>
           <p>
-            Интерфейс собран в спокойной официальной стилистике: чистая структура, аккуратная
-            визуальная иерархия, понятные статусы и готовность к развитию в сторону нагрузки,
-            аудита и межсистемных интеграций.
+            Платформа объединяет программы обучения, потоки, вебинарные сценарии, ролевой доступ
+            и будущий цифровой след в едином аккуратном интерфейсе, рассчитанном на доверие,
+            прозрачность процессов и масштабирование.
           </p>
 
           <div className="hero__actions">
             <a href="#foundation" className="primary-link">
-              Смотреть foundation-модули
+              Посмотреть возможности платформы
             </a>
-            <a href="http://127.0.0.1:8000/docs" className="secondary-link">
-              Открыть API документацию
+            <a href="#journey" className="secondary-link">
+              Как проходит обучение
             </a>
           </div>
         </div>
@@ -84,6 +106,36 @@ export default function HomePage() {
             <p>{item.text}</p>
           </article>
         ))}
+      </section>
+
+      <section className="proof-strip" aria-label="Ключевые преимущества платформы">
+        {trustFacts.map((fact) => (
+          <article key={fact} className="proof-item">
+            <span className="proof-item__dot" />
+            <p>{fact}</p>
+          </article>
+        ))}
+      </section>
+
+      <section className="journey-panel" id="journey">
+        <div>
+          <span className="section-label">Пользовательский сценарий</span>
+          <h2>Понятный путь от выбора программы до обучения и сопровождения</h2>
+          <p>
+            Главная страница показывает будущую логику цифрового сервиса: от знакомства с
+            программами до записи на поток, обучения и дальнейшего контроля прогресса.
+          </p>
+        </div>
+
+        <div className="journey-grid">
+          {userJourneys.map((item, index) => (
+            <article key={item.title} className="journey-card">
+              <span className="journey-card__step">0{index + 1}</span>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </article>
+          ))}
+        </div>
       </section>
 
       <section className="panel" id="foundation">
