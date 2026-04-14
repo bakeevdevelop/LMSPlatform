@@ -66,6 +66,9 @@ export function CourseCatalogOverview() {
         <div>
           <span className="section-label">Каталог курсов</span>
           <h3>{data.totalCourses} стартовых программ</h3>
+          <p className="catalog-description">
+            Набор пилотных программ для демонстрации учебного каталога и управления потоками.
+          </p>
         </div>
       </div>
 
@@ -79,7 +82,7 @@ export function CourseCatalogOverview() {
             </div>
             <h4>{course.title}</h4>
             <p>{course.description}</p>
-            <strong>{course.webinarHours} ч вебинаров</strong>
+            <strong className="metric-line">{course.webinarHours} ч вебинаров</strong>
           </article>
         ))}
       </div>

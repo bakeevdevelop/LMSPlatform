@@ -71,11 +71,15 @@ export function IdentityOverview() {
       <article className="identity-card">
         <span className="section-label">Пользователи</span>
         <h3>{data.totalUsers}</h3>
+        <p className="card-note">Стартовый реестр участников и сотрудников платформы.</p>
         <ul className="mini-list">
           {data.users.map((user) => (
             <li key={user.id}>
-              <strong>{user.fullName}</strong>
-              <span>{user.role}</span>
+              <div>
+                <strong>{user.fullName}</strong>
+                <small>{user.email}</small>
+              </div>
+              <span className="status-chip">{user.role}</span>
             </li>
           ))}
         </ul>
@@ -84,11 +88,15 @@ export function IdentityOverview() {
       <article className="identity-card">
         <span className="section-label">Роли</span>
         <h3>{data.totalRoles}</h3>
+        <p className="card-note">Ролевая модель для образовательного и административного контура.</p>
         <ul className="mini-list">
           {data.roles.map((role) => (
             <li key={role.code}>
-              <strong>{role.name}</strong>
-              <span>{role.code}</span>
+              <div>
+                <strong>{role.name}</strong>
+                <small>{role.description}</small>
+              </div>
+              <span className="status-chip">{role.code}</span>
             </li>
           ))}
         </ul>

@@ -139,14 +139,17 @@ export function EnrollmentOverview() {
         <article className="summary-tile">
           <span className="section-label">Потоки</span>
           <strong>{data.totalCohorts}</strong>
+          <p>Активные и плановые наборы по программам.</p>
         </article>
         <article className="summary-tile">
           <span className="section-label">Открытые</span>
           <strong>{data.openCohorts}</strong>
+          <p>Потоки, доступные для записи в текущем демо-контуре.</p>
         </article>
         <article className="summary-tile">
           <span className="section-label">Записи</span>
           <strong>{data.totalEnrollments}</strong>
+          <p>Зафиксированные enrollment-события в dev persistence.</p>
         </article>
       </div>
 
@@ -171,10 +174,18 @@ export function EnrollmentOverview() {
                 Заполнено: {cohort.enrolledCount}/{cohort.capacity}, свободно {cohort.availableSlots}
               </p>
 
+              <div className="cohort-progress" aria-hidden="true">
+                <span style={{ width: `${(cohort.enrolledCount / cohort.capacity) * 100}%` }} />
+              </div>
+
               <ul className="cohort-list">
                 {matchingEnrollments.map((enrollment) => (
                   <li key={enrollment.id}>
-                    {enrollment.userId}: {enrollment.status}, progress {enrollment.progressPercent}%
+                    <div>
+                      <strong>{enrollment.userId}</strong>
+                      <small>{enrollment.status}</small>
+                    </div>
+                    <span className="status-chip">{enrollment.progressPercent}%</span>
                   </li>
                 ))}
               </ul>
