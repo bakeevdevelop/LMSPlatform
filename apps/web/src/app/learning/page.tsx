@@ -1,5 +1,5 @@
 import { LearningCoreOverview } from '../../components/learning-core-overview';
-import { PlatformNavigation } from '../../components/platform-navigation';
+import { PlatformNavigation } from '../../components/platform-navigation.clean';
 
 export default function LearningPage() {
   return (

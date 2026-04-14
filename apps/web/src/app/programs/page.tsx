@@ -1,5 +1,5 @@
 import { CourseCatalogOverview } from '../../components/course-catalog-overview';
-import { PlatformNavigation } from '../../components/platform-navigation';
+import { PlatformNavigation } from '../../components/platform-navigation.clean';
 
 export default function ProgramsPage() {
   return (

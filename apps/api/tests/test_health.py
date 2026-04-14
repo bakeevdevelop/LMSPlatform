@@ -60,6 +60,16 @@ def test_identity_directory() -> None:
     assert data["roles"][0]["code"] == "admin"
 
 
+def test_student_dashboard() -> None:
+    response = client.get("/api/v1/auth/student/dashboard")
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["studentId"] == "demo-student"
+    assert data["totalActiveCourses"] == 1
+    assert data["inProgressCourses"][0]["courseId"] == "python-basic"
+
+
 def test_course_catalog() -> None:
     response = client.get("/api/v1/catalog/courses")
 

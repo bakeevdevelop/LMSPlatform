@@ -1,5 +1,5 @@
 import { IdentityOverview } from '../../components/identity-overview';
-import { PlatformNavigation } from '../../components/platform-navigation';
+import { PlatformNavigation } from '../../components/platform-navigation.clean';
 
 export default function RolesPage() {
   return (

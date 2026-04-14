@@ -2,7 +2,7 @@ import { CourseCatalogOverview } from '../components/course-catalog-overview';
 import { EnrollmentOverview } from '../components/enrollment-overview';
 import { IdentityOverview } from '../components/identity-overview';
 import { LearningCoreOverview } from '../components/learning-core-overview';
-import { PlatformNavigation } from '../components/platform-navigation';
+import { PlatformNavigation } from '../components/platform-navigation.clean';
 
 const platformStats = [
   { value: '24/7', label: 'доступ к учебным материалам и сервисам платформы' },

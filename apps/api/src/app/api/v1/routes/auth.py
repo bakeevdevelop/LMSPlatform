@@ -11,7 +11,9 @@ from app.schemas.auth import (
     LoginResponse,
     UserProfile,
 )
+from app.schemas.student import StudentDashboardResponse
 from app.services.identity import get_identity_directory as get_identity_directory_service
+from app.services.student import get_student_dashboard
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -52,3 +54,8 @@ def login(payload: LoginRequest) -> LoginResponse:
 @router.get("/directory", response_model=IdentityDirectoryResponse)
 def get_identity_directory(db: Session = Depends(get_db)) -> IdentityDirectoryResponse:
     return get_identity_directory_service(db)
+
+
+@router.get("/student/dashboard", response_model=StudentDashboardResponse)
+def get_student_dashboard_view(db: Session = Depends(get_db)) -> StudentDashboardResponse:
+    return get_student_dashboard(db)

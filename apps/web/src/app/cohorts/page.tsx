@@ -1,5 +1,5 @@
 import { EnrollmentOverview } from '../../components/enrollment-overview';
-import { PlatformNavigation } from '../../components/platform-navigation';
+import { PlatformNavigation } from '../../components/platform-navigation.clean';
 
 export default function CohortsPage() {
   return (
