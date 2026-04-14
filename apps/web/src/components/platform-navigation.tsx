@@ -1,11 +1,17 @@
 import Link from 'next/link';
+import type { Route } from 'next';
 
-const links = [
-  { href: '/' as const, label: 'Главная' },
-  { href: '/programs' as const, label: 'Программы' },
-  { href: '/cohorts' as const, label: 'Потоки' },
-  { href: '/learning' as const, label: 'Обучение' },
-  { href: '/roles' as const, label: 'Роли' },
+type NavigationLink = {
+  href: Route;
+  label: string;
+};
+
+const links: NavigationLink[] = [
+  { href: '/', label: 'Главная' },
+  { href: '/programs', label: 'Программы' },
+  { href: '/cohorts', label: 'Потоки' },
+  { href: '/learning', label: 'Обучение' },
+  { href: '/roles', label: 'Роли' },
 ];
 
 export function PlatformNavigation() {
