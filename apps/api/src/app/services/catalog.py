@@ -20,6 +20,8 @@ from app.schemas.catalog import (
     LearningLessonSummary,
     LearningModuleCatalogResponse,
     LearningModuleSummary,
+    StudentCourseLearningProgress,
+    StudentLearningProgressResponse,
 )
 
 
@@ -424,4 +426,99 @@ def get_learning_lesson_catalog(db: Session) -> LearningLessonCatalogResponse:
             )
             for lesson in lessons
         ],
+    )
+
+
+def get_student_learning_progress(db: Session, student_id: str = "demo-student") -> StudentLearningProgressResponse:
+    seed_enrollment_data(db)
+    seed_learning_lessons(db)
+
+    student = db.get(User, student_id)
+    if student is None:
+        raise ValueError("student_not_found")
+
+    enrollments = db.scalars(
+        select(Enrollment).where(Enrollment.user_id == student_id).order_by(Enrollment.enrolled_at)
+    ).all()
+
+    if not enrollments:
+        return StudentLearningProgressResponse(
+            student_id=student.id,
+            full_name=student.full_name,
+            total_enrolled_courses=0,
+            completed_lessons=0,
+            total_lessons_planned=0,
+            completion_percent=0,
+            courses=[],
+        )
+
+    course_ids = {enrollment.course_id for enrollment in enrollments}
+    modules = db.scalars(select(LearningModule).where(LearningModule.course_id.in_(course_ids))).all()
+    lessons = db.scalars(select(LearningLesson)).all()
+    courses = db.scalars(select(Course).where(Course.id.in_(course_ids))).all()
+
+    module_by_course: dict[str, list[LearningModule]] = {}
+    for module in modules:
+        module_by_course.setdefault(module.course_id, []).append(module)
+    for module_list in module_by_course.values():
+        module_list.sort(key=lambda item: item.position)
+
+    lessons_by_module: dict[str, list[LearningLesson]] = {}
+    for lesson in lessons:
+        lessons_by_module.setdefault(lesson.module_id, []).append(lesson)
+    for lesson_list in lessons_by_module.values():
+        lesson_list.sort(key=lambda item: item.position)
+
+    course_map = {course.id: course for course in courses}
+
+    course_items: list[StudentCourseLearningProgress] = []
+    completed_lessons_total = 0
+    total_lessons_planned_total = 0
+
+    for enrollment in enrollments:
+        course = course_map.get(enrollment.course_id)
+        if course is None:
+            continue
+
+        modules_for_course = module_by_course.get(course.id, [])
+        total_lessons_for_course = sum(module.lessons_total for module in modules_for_course)
+        derived_completed_lessons = min((enrollment.progress_percent * total_lessons_for_course) // 100, total_lessons_for_course)
+
+        next_module_title = modules_for_course[0].title if modules_for_course else None
+        next_lesson_title = None
+        if modules_for_course:
+            next_module_lessons = lessons_by_module.get(modules_for_course[0].id, [])
+            if next_module_lessons:
+                next_lesson_title = next_module_lessons[0].title
+
+        completed_lessons_total += derived_completed_lessons
+        total_lessons_planned_total += total_lessons_for_course
+
+        course_items.append(
+            StudentCourseLearningProgress(
+                course_id=course.id,
+                course_title=course.title,
+                status=enrollment.status,
+                progress_percent=enrollment.progress_percent,
+                completed_lessons=derived_completed_lessons,
+                total_lessons=total_lessons_for_course,
+                next_module_title=next_module_title,
+                next_lesson_title=next_lesson_title,
+            )
+        )
+
+    completion_percent = (
+        int((completed_lessons_total / total_lessons_planned_total) * 100)
+        if total_lessons_planned_total > 0
+        else 0
+    )
+
+    return StudentLearningProgressResponse(
+        student_id=student.id,
+        full_name=student.full_name,
+        total_enrolled_courses=len(course_items),
+        completed_lessons=completed_lessons_total,
+        total_lessons_planned=total_lessons_planned_total,
+        completion_percent=completion_percent,
+        courses=course_items,
     )

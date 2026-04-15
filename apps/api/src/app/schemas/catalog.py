@@ -85,3 +85,24 @@ class LearningLessonSummary(BaseModel):
 class LearningLessonCatalogResponse(BaseModel):
     total_lessons: int = Field(serialization_alias="totalLessons")
     lessons: list[LearningLessonSummary]
+
+
+class StudentCourseLearningProgress(BaseModel):
+    course_id: str = Field(serialization_alias="courseId")
+    course_title: str = Field(serialization_alias="courseTitle")
+    status: str
+    progress_percent: int = Field(serialization_alias="progressPercent")
+    completed_lessons: int = Field(serialization_alias="completedLessons")
+    total_lessons: int = Field(serialization_alias="totalLessons")
+    next_module_title: str | None = Field(default=None, serialization_alias="nextModuleTitle")
+    next_lesson_title: str | None = Field(default=None, serialization_alias="nextLessonTitle")
+
+
+class StudentLearningProgressResponse(BaseModel):
+    student_id: str = Field(serialization_alias="studentId")
+    full_name: str = Field(serialization_alias="fullName")
+    total_enrolled_courses: int = Field(serialization_alias="totalEnrolledCourses")
+    completed_lessons: int = Field(serialization_alias="completedLessons")
+    total_lessons_planned: int = Field(serialization_alias="totalLessonsPlanned")
+    completion_percent: int = Field(serialization_alias="completionPercent")
+    courses: list[StudentCourseLearningProgress]

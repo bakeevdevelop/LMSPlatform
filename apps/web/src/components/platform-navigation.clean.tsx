@@ -8,6 +8,7 @@ const links: NavigationLink[] = [
   { href: '/dashboard', label: 'Кабинет' },
   { href: '/programs', label: 'Программы' },
   { href: '/cohorts', label: 'Потоки' },
+  { href: '/learning', label: 'Обучение' },
   { href: '/roles', label: 'Роли' },
 ];
 

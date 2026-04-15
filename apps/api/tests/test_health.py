@@ -155,3 +155,22 @@ def test_learning_lesson_catalog() -> None:
     assert data["totalLessons"] == 5
     assert data["lessons"][0]["moduleId"] == "data-analytics-module-1"
     assert data["lessons"][1]["lessonType"] == "lesson"
+
+
+def test_student_learning_progress() -> None:
+    response = client.get("/api/v1/catalog/learning/progress")
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["studentId"] == "demo-student"
+    assert data["totalEnrolledCourses"] == 1
+    assert data["completionPercent"] >= 0
+    assert data["courses"][0]["courseId"] == "python-basic"
+    assert data["courses"][0]["totalLessons"] == 11
+
+
+def test_student_learning_progress_unknown_student() -> None:
+    response = client.get("/api/v1/catalog/learning/progress", params={"student_id": "missing-student"})
+
+    assert response.status_code == 404
+    assert response.json()["detail"] == "student_not_found"

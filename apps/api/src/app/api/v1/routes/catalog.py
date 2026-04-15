@@ -9,6 +9,7 @@ from app.schemas.catalog import (
     EnrollmentDirectoryResponse,
     LearningLessonCatalogResponse,
     LearningModuleCatalogResponse,
+    StudentLearningProgressResponse,
 )
 from app.services.catalog import (
     create_enrollment,
@@ -16,6 +17,7 @@ from app.services.catalog import (
     get_enrollment_directory,
     get_learning_lesson_catalog,
     get_learning_module_catalog,
+    get_student_learning_progress,
 )
 
 router = APIRouter(prefix="/catalog", tags=["catalog"])
@@ -39,6 +41,19 @@ def list_learning_modules(db: Session = Depends(get_db)) -> LearningModuleCatalo
 @router.get("/lessons", response_model=LearningLessonCatalogResponse)
 def list_learning_lessons(db: Session = Depends(get_db)) -> LearningLessonCatalogResponse:
     return get_learning_lesson_catalog(db)
+
+
+@router.get("/learning/progress", response_model=StudentLearningProgressResponse)
+def get_learning_progress(
+    student_id: str = "demo-student",
+    db: Session = Depends(get_db),
+) -> StudentLearningProgressResponse:
+    try:
+        return get_student_learning_progress(db, student_id=student_id)
+    except ValueError as exc:
+        if str(exc) == "student_not_found":
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="student_not_found") from exc
+        raise
 
 
 @router.post("/enroll", response_model=EnrollmentCreateResponse, status_code=status.HTTP_201_CREATED)
