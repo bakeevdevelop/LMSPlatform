@@ -1,8 +1,5 @@
-import Link from 'next/link';
-import type { Route } from 'next';
-
 type NavigationLink = {
-  href: Route;
+  href: string;
   label: string;
 };
 
@@ -11,7 +8,6 @@ const links: NavigationLink[] = [
   { href: '/dashboard', label: 'Кабинет' },
   { href: '/programs', label: 'Программы' },
   { href: '/cohorts', label: 'Потоки' },
-  { href: '/learning', label: 'Обучение' },
   { href: '/roles', label: 'Роли' },
 ];
 
@@ -28,9 +24,9 @@ export function PlatformNavigation() {
 
       <div className="page-nav__links">
         {links.map((link) => (
-          <Link key={link.href} href={link.href}>
+          <a key={link.href} href={link.href}>
             {link.label}
-          </Link>
+          </a>
         ))}
       </div>
     </nav>
